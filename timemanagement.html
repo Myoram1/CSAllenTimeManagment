@@ -111,45 +111,77 @@
           monthName.innerText = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(currentMonth);
 
           calendarBody.innerHTML = "";
+	  let currentDayOfWeek = firstDay.getDay();
+	  let currentDayOfMonth = 1;
+	  for (let week = 0; week < 6; week++) {
+	      let row = document.createElement("tr");
 
-          let currentDayOfWeek = firstDay.getDay();
-          let currentDayOfMonth = 1;
-          for (let week = 0; week < 6; week++) {
-              let row = document.createElement("tr");
+	      for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+		  let day = document.createElement("td");
 
-              for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
-                  let day = document.createElement("td");
+		  if (week === 0 && dayOfWeek < currentDayOfWeek || currentDayOfMonth > daysInMonth) {
+		      day.innerText = '';
+		  } else {
+		      day.innerText = currentDayOfMonth++;
+		  }
 
-                  if (week === 0 && dayOfWeek < currentDayOfWeek || currentDayOfMonth > daysInMonth) {
-                      day.innerText = '';
-                  } else {
-                      day.innerText = currentDayOfMonth++;
-                  }
-
-                  row.appendChild(day);
-              }
-              calendarBody.appendChild(row);
-          }
+		  row.appendChild(day);
+	      }
+	      calendarBody.appendChild(row);
+	  }
       }
 
       displayCalendar();
 
       document.getElementById("prevMonthBtn").addEventListener("click", function () {
-          currentMonth.setMonth(currentMonth.getMonth() - 1);
-          displayCalendar();
+	  currentMonth.setMonth(currentMonth.getMonth() - 1);
+	  displayCalendar();
       });
 
       document.getElementById("nextMonthBtn").addEventListener("click", function () {
-          currentMonth.setMonth(currentMonth.getMonth() + 1);
-          displayCalendar();
+	  currentMonth.setMonth(currentMonth.getMonth() + 1);
+	  displayCalendar();
       });
 
       document.getElementById("addAssignmentBtn").addEventListener("click", function () {
-          // ...
+	  let assignmentName = prompt("Enter the assignment name:");
+	  let studyDays = parseInt(prompt("Enter the number of days you plan to study:"));
+	  let dueDay = parseInt(prompt("Enter the due day of the month:"));
+
+	  // Set the due date based on the current month displayed and the input day
+	  let dueDateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), dueDay);
+	  let currentDateObj = new Date(dueDateObj);
+
+	  // Iterate through the study days and mark them in green
+	  for (let i = 0; i < studyDays; i++) {
+	      currentDateObj.setDate(dueDateObj.getDate() - i);
+	      let cell = getCellByDate(currentDateObj);
+	      if (cell) {
+		  cell.style.color = "green";
+		  cell.classList.add("study-day"); // Add the new CSS class to the table cell
+	      }
+	  }
+
+	  // Mark the due date cell in red and add assignment name as a tooltip
+	  let dueDateCell = getCellByDate(dueDateObj);
+	  if (dueDateCell) {
+	      dueDateCell.style.color = "red";
+	      dueDateCell.title = assignmentName;
+	  }
       });
 
       function getCellByDate(dateObj) {
-          // ...
+	  let rows = calendarBody.getElementsByTagName("tr");
+	  let targetDate = dateObj.getDate();
+
+	  for (let row of rows) {
+	      let cells = row.getElementsByTagName("td");
+	      for (let cell of cells) {
+		  if (parseInt(cell.innerText) === targetDate) {
+		      return cell;
+		  }
+	      }
+	  }
       }
 
       // Timer functionality
@@ -159,31 +191,34 @@
       let timer;
 
       startTimerButton.addEventListener("click", function () {
-          let studyMinutes = parseInt(studyTimeInput.value);
-          if (!studyMinutes || studyMinutes < 1) {
-              alert("Please enter a valid study time in minutes.");
-              return;
-          }
+	  let studyMinutes = parseInt(studyTimeInput.value);
+	  if (!studyMinutes || studyMinutes < 1) {
+	      alert("Please enter a valid study time in minutes.");
+	      return;
+	  }
 
-          let endTime = new Date().getTime() + studyMinutes * 60 * 1000;
+	  let endTime = new Date().getTime() + studyMinutes * 60 * 1000;
 
-          clearInterval(timer);
-          timer = setInterval(function () {
-              let now = new Date().getTime();
-              let distance = endTime - now;
+	  clearInterval(timer);
+	  timer = setInterval(function () {
+	      let now = new Date().getTime();
+	      let distance = endTime - now;
 
-              if (distance <= 0) {
-                  clearInterval(timer);
-                  timerDisplay.innerHTML = "Time's up!";
-                  return;
-              }
+	      if (distance <= 0) {
+		  clearInterval(timer);
+		  timerDisplay.innerHTML = "Time's up!";
+		  return;
+	      }
 
-              let minutes = Math.floor(distance / (1000 * 60));
-              let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+	      let minutes = Math.floor(distance / (1000 * 60));
+	      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-              timerDisplay.innerHTML = minutes + "m " + seconds + "s";
-          }, 1000);
+	      timerDisplay.innerHTML = minutes + "m " + seconds + "s";
+	  }, 1000);
       });
     </script>
   </body>
-  </html>
+</html>
+
+	      
+      

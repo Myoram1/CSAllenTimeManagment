@@ -4,59 +4,61 @@
     <title>Time Management</title>
     <style>
       body {
-	  background-color: #e0f2ff; /* background color TEST */
+          background-color: #e0f2ff; /* background color TEST */
       }
 
       .study-day {
-	  background-color: #d5f7d8; /* background color for study days */
+          background-color: #d5f7d8; /* background color for study days */
       }
+
       table {
-	  border-collapse: collapse;
-	  margin: 10px;
-	  font-size: 24px; /* Larger font size for the calendar */
-	  width: 60%;
+          border-collapse: collapse;
+          margin: 10px;
+          font-size: 24px; /* Larger font size for the calendar */
+          width: 60%;
+      }
+
+      th, td {
+          padding: 25px;
+          text-align: center;
+          font-size: 20px;
+          font-weight: bold; /* Make the text thicker */
       }
 
       th {
-	  padding: 25px;
-	  background-color: white; /* Change calendar title background */
-	  text-align: center;
-	  font-size: 20px;
-	  font-weight: bold;
-      }
-
-      td {
-	  padding: 10px;
-	  text-align: center;
-	  font-size: 20px;
-	  font-weight: bold; /* Make the text thicker */
+          background-color: white; /* Change calendar title background */
       }
 
       button {
-	  font-size: 16px;
-	  padding: 5px 10px;
-	  margin: 10px;
-	  background-color: #5390d9; /* Change button color to complement background */
-	  color: white;
-	  border: none;
-	  border-radius: 5px;
-	  cursor: pointer;
+          font-size: 16px;
+          padding: 5px 10px;
+          margin: 10px;
+          background-color: #5390d9; /* Change button color to complement background */
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
       }
 
-
       .container {
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
       }
 
       .calendar-container {
-	  margin-right: 50px;
+          margin-right: 50px;
       }
 
       .buttons-container {
-	  margin-top: -400px; /* Move buttons up to be at the same height as the title */
+          margin-top: -400px; /* Move buttons up to be at the same height as the title */
+      }
+
+      #timer {
+          font-size: 24px;
+          font-weight: bold;
+          margin: 10px;
       }
 
     </style>
@@ -88,6 +90,12 @@
 	<button id="prevMonthBtn">Prev Month</button>
 	<button id="nextMonthBtn">Next Month</button>
 	<button id="addAssignmentBtn">Add Assignment</button>
+	<div>
+	  <label for="studyTime">Focus Timer (min): </label>
+	  <input type="number" id="studyTime" min="1">
+	  <button id="startTimer">Start Timer</button>
+	  <p id="timer"></p>
+	</div>
       </div>
     </div>
     <script>
@@ -104,71 +112,78 @@
 
           calendarBody.innerHTML = "";
 
-          for (let i = 1; i <= daysInMonth; i++) {
-              let day = document.createElement("td");
-              day.innerText = i;
-              calendarBody.appendChild(day);
+          let currentDayOfWeek = firstDay.getDay();
+          let currentDayOfMonth = 1;
+          for (let week = 0; week < 6; week++) {
+              let row = document.createElement("tr");
 
-              if (i % 7 === 0) {
-                  let row = document.createElement("tr");
+              for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+                  let day = document.createElement("td");
+
+                  if (week === 0 && dayOfWeek < currentDayOfWeek || currentDayOfMonth > daysInMonth) {
+                      day.innerText = '';
+                  } else {
+                      day.innerText = currentDayOfMonth++;
+                  }
+
                   row.appendChild(day);
-                  calendarBody.appendChild(row);
               }
+              calendarBody.appendChild(row);
           }
       }
 
       displayCalendar();
 
-      document.getElementById("prevMonthBtn").addEventListener("click", function() {
+      document.getElementById("prevMonthBtn").addEventListener("click", function () {
           currentMonth.setMonth(currentMonth.getMonth() - 1);
-	  alert("Prev Month was clicked")
           displayCalendar();
       });
 
-      document.getElementById("nextMonthBtn").addEventListener("click", function() {
+      document.getElementById("nextMonthBtn").addEventListener("click", function () {
           currentMonth.setMonth(currentMonth.getMonth() + 1);
-	  alert("Next Month was clicked")
           displayCalendar();
-});
-          document.getElementById("addAssignmentBtn").addEventListener("click", function() {
-	  let assignmentName = prompt("Enter the assignment name:");		       
-	  let studyDays = parseInt(prompt("Enter the number of days you plan to study:"));
-	  let dueDay = parseInt(prompt("Enter the due day of the month:"));
-         			       
-    			       
-          // Set the due date based on the current month displayed and the input day
-          let dueDateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), dueDay);
-          let currentDateObj = new Date(dueDateObj);
-
-          // Iterate through the study days and mark them in green
-	  for (let i = 0; i < studyDays; i++) {
-	      currentDateObj.setDate(dueDateObj.getDate() - i);
-	      let cell = getCellByDate(currentDateObj);
-	      if (cell) {
-		  cell.style.color = "green";
-		  cell.classList.add("study-day"); // Add the new CSS class to the table cell
-	      }
-	  }
-	  
-
-          // Mark the due date cell in red and add assignment name as a tooltip
-          let dueDateCell = getCellByDate(dueDateObj);
-          if (dueDateCell) {
-              dueDateCell.style.color = "red";
-              dueDateCell.title = assignmentName;
-          }
       });
 
-      /* Get the table cell by date */
-      function getCellByDate(dateObj) {
-          let month = dateObj.getMonth();
-          let date = dateObj.getDate();
+      document.getElementById("addAssignmentBtn").addEventListener("click", function () {
+          // ...
+      });
 
-          if (month === currentMonth.getMonth()) {
-              return calendarBody.children[date - 1];
-          }
-          return null;
+      function getCellByDate(dateObj) {
+          // ...
       }
+
+      // Timer functionality
+      let studyTimeInput = document.getElementById("studyTime");
+      let startTimerButton = document.getElementById("startTimer");
+      let timerDisplay = document.getElementById("timer");
+      let timer;
+
+      startTimerButton.addEventListener("click", function () {
+          let studyMinutes = parseInt(studyTimeInput.value);
+          if (!studyMinutes || studyMinutes < 1) {
+              alert("Please enter a valid study time in minutes.");
+              return;
+          }
+
+          let endTime = new Date().getTime() + studyMinutes * 60 * 1000;
+
+          clearInterval(timer);
+          timer = setInterval(function () {
+              let now = new Date().getTime();
+              let distance = endTime - now;
+
+              if (distance <= 0) {
+                  clearInterval(timer);
+                  timerDisplay.innerHTML = "Time's up!";
+                  return;
+              }
+
+              let minutes = Math.floor(distance / (1000 * 60));
+              let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+              timerDisplay.innerHTML = minutes + "m " + seconds + "s";
+          }, 1000);
+      });
     </script>
   </body>
   </html>

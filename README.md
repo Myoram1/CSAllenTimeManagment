@@ -17,7 +17,7 @@ Mason Williams
 	
 George Winters
 	QA Engineer
-	https://codermerlin.academy/users/george-winters/Digital%20Portfolio/CS-II/Projects/ISP/Journal.html
+	https://www.codermerlin.academy/users/george-winters/Digital%20Portfolio/CS-II/Projects/ISP/Journal.html
 Kyle Hernandez
 	Software Developer
 	https://codermerlin.academy/users/kyle-hernandez/Digital%20Portfolio/CS-II/Projects/ISP/Journal.html

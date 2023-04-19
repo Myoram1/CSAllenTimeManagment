@@ -3,66 +3,93 @@
   <head>
     <title>Time Management</title>
     <style>
+      body {
+	  background-color: #e0f2ff; /* background color */
+      }
+
       .study-day {
-	  background-color: #d5f7d8; /* New background color for study days */
+	  background-color: #d5f7d8; /* background color for study days */
       }
       table {
-          border-collapse: collapse;
-          margin: 10px;
+	  border-collapse: collapse;
+	  margin: 10px;
+	  font-size: 24px; /* Larger font size for the calendar */
+	  width: 60%;
       }
 
       th {
-          padding: 10px;
-          background-color: #ddd;
-          text-align: center;
-          font-size: 20px;
-          font-weight: bold;
+	  padding: 25px;
+	  background-color: white; /* Change calendar title background */
+	  text-align: center;
+	  font-size: 20px;
+	  font-weight: bold;
       }
 
       td {
-          padding: 10px;
-          text-align: center;
-          font-size: 16px;
-          font-weight: bold; /* Make the text thicker */
+	  padding: 10px;
+	  text-align: center;
+	  font-size: 20px;
+	  font-weight: bold; /* Make the text thicker */
       }
 
       button {
-          font-size: 16px;
-          padding: 5px 10px;
-          margin: 10px;
-          background-color: #4caf50;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
+	  font-size: 16px;
+	  padding: 5px 10px;
+	  margin: 10px;
+	  background-color: #5390d9; /* Change button color to complement background */
+	  color: white;
+	  border: none;
+	  border-radius: 5px;
+	  cursor: pointer;
       }
-      
+
+
+      .container {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  height: 100vh;
+      }
+
+      .calendar-container {
+	  margin-right: 50px;
+      }
+
+      .buttons-container {
+	  margin-top: -400px; /* Move buttons up to be at the same height as the title */
+      }
+
     </style>
   </head>
   <body>
-    <h1>Time Management</h1>
-    <button id="prevMonthBtn">Prev Month</button>
-    <button id="nextMonthBtn">Next Month</button>
-    <button id="addAssignmentBtn">Add Ass.</button>
-    <table>
-      <thead>
-	<tr>
-	  <th colspan="7" id="monthName"></th>
-	</tr>
-	<tr>
-	  <th>Sun</th>
-	  <th>Mon</th>
-	  <th>Tue</th>
-	  <th>Wed</th>
-	  <th>Thu</th>
-	  <th>Fri</th>
-	  <th>Sat</th>
-	</tr>
-      </thead>
-      <tbody id="calendarBody">
-      </tbody>
-    </table>
-
+    <div class="container">
+      <div class="calendar-container">
+	<h1>Time Management</h1>
+	<table>
+	  <thead>
+	    <tr>
+	      <th colspan="7" id="monthName"></th>
+	    </tr>
+	    <tr>
+	      <th>Sun</th>
+	      <th>Mon</th>
+	      <th>Tue</th>
+	      <th>Wed</th>
+	      <th>Thu</th>
+	      <th>Fri</th>
+	      <th>Sat</th>
+	    </tr>
+	  </thead>
+	  <tbody id="calendarBody">
+	  </tbody>
+	</table>
+      </div>
+      <div class="buttons-container">
+	<button id="prevMonthBtn">Prev Month</button>
+	<button id="nextMonthBtn">Next Month</button>
+	<button id="addAssignmentBtn">Add Assignment</button>
+      </div>
+    </div>
     <script>
       let currentMonth = new Date();
       let calendarBody = document.getElementById("calendarBody");

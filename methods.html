@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="with=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css">
+  </head>
+  <body>
+    <section class="header">
+      <nav>
+	<a href="index.html"><img src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/256/calendar-icon.png"></a>
+	<div class="nav-links" id="navLinks">
+	  <i class="fa fa-times-circle-o" onclick="hideMenu()"></i>
+	  <ul>
+	    <li><a href="https://www.codermerlin.academy/users/myoram-langwang/Digital%20Portfolio/CS-II/Projects/ISP/CSAllenTimeManagment/homePage.html">Home</a></li>
+	    <li><a href="https://www.codermerlin.academy/users/myoram-langwang/Digital%20Portfolio/CS-II/Projects/ISP/CSAllenTimeManagment/methods.html">Methods</a></li>
+	    <li><a href="https://www.codermerlin.academy/users/myoram-langwang/Digital%20Portfolio/CS-II/Projects/ISP/CSAllenTimeManagment/about.html">About</a></li>
+	    <li><a href="https://www.codermerlin.academy/users/myoram-langwang/Digital%20Portfolio/CS-II/Projects/ISP/CSAllenTimeManagment/feedBack.html">FeedBack</a></li>
+	    <li><a href="https://www.codermerlin.academy/users/myoram-langwang/Digital%20Portfolio/CS-II/Projects/ISP/CSAllenTimeManagment/help.html">Help</a></li>
+
+	  </ul>
+	  <i class="fa fa-times-circle-o"  onclick="showMenu()"></i>
+
+      </nav>
+
+      <div class="text-box">
+	<h1>5 min rest</h1>
+	<p>Methods</p>
+	</div>
+
+
+      </section>
+
+<!-----JavaScript for Toggle Menu------>
+    <script>
+      var navLinks = document.getElementById("navLinks");
+
+      function showMenu() {
+	  navLinks.style.right= "0";
+      }
+      function hideMenu() {
+	  navLinks.style.right="-200px";
+
+    </script>
+    
+  </body>
+  </html>

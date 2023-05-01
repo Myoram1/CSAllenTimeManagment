@@ -96,21 +96,29 @@
 	  <button id="startTimer">Start Timer</button>
 	  <p id="timer"></p>
 	</div>
+	<div>
+	  <h3>Assignments</h3>
+	  <ul id="assignmentList"></ul>
+	</div>
       </div>
     </div>
     <script>
       let currentMonth = new Date();
       let calendarBody = document.getElementById("calendarBody");
       let monthName = document.getElementById("monthName");
+      let assignments = JSON.parse(localStorage.getItem("assignments")) || [];
+
+      function saveAssignments() {
+          localStorage.setItem("assignments", JSON.stringify(assignments));
+      }
 
       function displayCalendar() {
           let firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
           let lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
           let daysInMonth = lastDay.getDate();
+	  monthName.innerText = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(currentMonth);
 
-          monthName.innerText = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(currentMonth);
-
-          calendarBody.innerHTML = "";
+	  calendarBody.innerHTML = "";
 	  let currentDayOfWeek = firstDay.getDay();
 	  let currentDayOfMonth = 1;
 	  for (let week = 0; week < 6; week++) {
@@ -129,6 +137,31 @@
 	      }
 	      calendarBody.appendChild(row);
 	  }
+
+	  for (let assignment of assignments) {
+	      let assignmentDate = new Date(assignment.dueDate);
+	      if (assignmentDate.getMonth() === currentMonth.getMonth() &&
+		  assignmentDate.getFullYear() === currentMonth.getFullYear()) {
+		  let dueDateObj = new Date(assignment.dueDate);
+		  let currentDateObj = new Date(dueDateObj);
+
+		  for (let i = 0; i < assignment.studyDays; i++) {
+		      currentDateObj.setDate(dueDateObj.getDate() - i);
+		      let cell = getCellByDate(currentDateObj);
+		      if (cell) {
+			  cell.style.color = "green";
+			  cell.classList.add("study-day");
+		      }
+		  }
+
+		  let dueDateCell = getCellByDate(dueDateObj);
+		  if (dueDateCell) {
+		      dueDateCell.style.color = "red";
+		      dueDateCell.title = assignment.name;
+		  }
+	      }
+	  }
+	  displayAssignmentList();
       }
 
       displayCalendar();
@@ -148,26 +181,15 @@
 	  let studyDays = parseInt(prompt("Enter the number of days you plan to study:"));
 	  let dueDay = parseInt(prompt("Enter the due day of the month:"));
 
-	  // Set the due date based on the current month displayed and the input day
 	  let dueDateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), dueDay);
-	  let currentDateObj = new Date(dueDateObj);
 
-	  // Iterate through the study days and mark them in green
-	  for (let i = 0; i < studyDays; i++) {
-	      currentDateObj.setDate(dueDateObj.getDate() - i);
-	      let cell = getCellByDate(currentDateObj);
-	      if (cell) {
-		  cell.style.color = "green";
-		  cell.classList.add("study-day"); // Add the new CSS class to the table cell
-	      }
-	  }
-
-	  // Mark the due date cell in red and add assignment name as a tooltip
-	  let dueDateCell = getCellByDate(dueDateObj);
-	  if (dueDateCell) {
-	      dueDateCell.style.color = "red";
-	      dueDateCell.title = assignmentName;
-	  }
+	  assignments.push({
+	      name: assignmentName,
+	      studyDays: studyDays,
+	      dueDate: dueDateObj.toISOString()
+	  });
+	  saveAssignments();
+	  displayCalendar();
       });
 
       function getCellByDate(dateObj) {
@@ -184,6 +206,17 @@
 	  }
       }
 
+      function displayAssignmentList() {
+	  let assignmentList = document.getElementById("assignmentList");
+	  assignmentList.innerHTML = "";
+
+	  for (let assignment of assignments) {
+	      let listItem = document.createElement("li");
+	      listItem.textContent = `${assignment.name} - Due: ${new Date(assignment.dueDate).toLocaleDateString()}`;
+	      assignmentList.appendChild(listItem);
+	  }
+      }
+
       // Timer functionality
       let studyTimeInput = document.getElementById("studyTime");
       let startTimerButton = document.getElementById("startTimer");
@@ -191,34 +224,38 @@
       let timer;
 
       startTimerButton.addEventListener("click", function () {
-	  let studyMinutes = parseInt(studyTimeInput.value);
-	  if (!studyMinutes || studyMinutes < 1) {
-	      alert("Please enter a valid study time in minutes.");
+	  if (timer) {
+	      clearInterval(timer);
+	  }
+	  let studyTime = studyTimeInput.value;
+	  if (studyTime <= 0) {
+	      alert("Please input a valid study time in minutes.");
 	      return;
 	  }
+	  let timeRemaining = studyTime * 60;
+	  timerDisplay.innerText = formatTime(timeRemaining);
 
-	  let endTime = new Date().getTime() + studyMinutes * 60 * 1000;
-
-	  clearInterval(timer);
 	  timer = setInterval(function () {
-	      let now = new Date().getTime();
-	      let distance = endTime - now;
+	      timeRemaining--;
 
-	      if (distance <= 0) {
+	      if (timeRemaining < 0) {
 		  clearInterval(timer);
-		  timerDisplay.innerHTML = "Time's up!";
-		  return;
+		  timerDisplay.innerText = "";
+		  alert("Time's up!");
+	      } else {
+		  timerDisplay.innerText = formatTime(timeRemaining);
 	      }
-
-	      let minutes = Math.floor(distance / (1000 * 60));
-	      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-	      timerDisplay.innerHTML = minutes + "m " + seconds + "s";
 	  }, 1000);
       });
+
+      function formatTime(timeInSeconds) {
+	  let minutes = Math.floor(timeInSeconds / 60);
+	  let seconds = timeInSeconds % 60;
+	  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+      }
+
     </script>
   </body>
-</html>
-
-	      
+  </script>
+      
       

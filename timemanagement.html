@@ -51,6 +51,20 @@
           margin-right: 50px;
       }
 
+      .backToHp {
+	  background-color: #FF0000;
+	  border: none;
+	  color: white;
+	  padding: 20px 34px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 20px;
+	  margin: 4px 2px;
+	  cursor: pointer;
+	  }
+      }
+
       .buttons-container {
           margin-top: -400px; /* Move buttons up to be at the same height as the title */
       }
@@ -67,7 +81,8 @@
     <div class="container">
       <div class="calendar-container">
 	<h1>Time Management</h1>
-	<table>
+	 <a href="homePage.html" class="backToHp">Go Back To Homepage!</a>
+	 <table>
 	  <thead>
 	    <tr>
 	      <th colspan="7" id="monthName"></th>
@@ -175,6 +190,8 @@
 	  currentMonth.setMonth(currentMonth.getMonth() + 1);
 	  displayCalendar();
       });
+      
+      
 
       document.getElementById("addAssignmentBtn").addEventListener("click", function () {
 	  let assignmentName = prompt("Enter the assignment name:");
@@ -191,6 +208,7 @@
 	  saveAssignments();
 	  displayCalendar();
       });
+
 
       function getCellByDate(dateObj) {
 	  let rows = calendarBody.getElementsByTagName("tr");

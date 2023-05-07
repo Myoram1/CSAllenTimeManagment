@@ -113,13 +113,13 @@ nav .fa {
     }
 }
 
-.body p {
+.body {
+    color: #F56991;
     font-size: 20px;
     text-align: left;
-    color: #F56991;
     text-indent: 100px;
     margin-left: 12%;
     margin-right: 12%;
-    margin-top: 18%;
+    margin-top: 30%;
     margin-bottom:12px;
 }

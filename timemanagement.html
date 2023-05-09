@@ -65,6 +65,9 @@
 	  }
       }
 
+  
+      
+
       .buttons-container {
           margin-top: -400px; /* Move buttons up to be at the same height as the title */
       }
@@ -105,6 +108,7 @@
 	<button id="prevMonthBtn">Prev Month</button>
 	<button id="nextMonthBtn">Next Month</button>
 	<button id="addAssignmentBtn">Add Assignment</button>
+	
 	<div>
 	  <label for="studyTime">Focus Timer (min): </label>
 	  <input type="number" id="studyTime" min="1">
@@ -126,6 +130,7 @@
       function saveAssignments() {
           localStorage.setItem("assignments", JSON.stringify(assignments));
       }
+      
 
       function displayCalendar() {
           let firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
@@ -190,6 +195,7 @@
 	  currentMonth.setMonth(currentMonth.getMonth() + 1);
 	  displayCalendar();
       });
+
       
       
 
@@ -209,6 +215,7 @@
 	  displayCalendar();
       });
 
+						  
 
       function getCellByDate(dateObj) {
 	  let rows = calendarBody.getElementsByTagName("tr");

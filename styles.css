@@ -60,7 +60,7 @@ nav img {
     width: 99%;
     color: #FFA500;
     position: absolute;
-    top: 50%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -82,7 +82,10 @@ nav .fa {
 
 @media(max-width: 700px) {
     .text-box h1 {
-	font-size: 20px;
+	font-size: 40px;
+	text-align: center;
+	color: #FFF;
+	mmargin-top: 1%;
     }
     .nav-links ul li {
 	display: block;
@@ -108,4 +111,15 @@ nav .fa {
     .nav-links ul {
 	padding: 30px;
     }
+}
+
+.body {
+    color: #F56991;
+    font-size: 20px;
+    text-align: center;
+    text-indent: 100px;
+    margin-left: 12%;
+    margin-right: 12%;
+    margin-top: 10%;
+    margin-bottom:12px;
 }
